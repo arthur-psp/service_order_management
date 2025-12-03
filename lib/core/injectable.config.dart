@@ -35,7 +35,6 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.factory<_i1027.Localdb>(() => _i1027.Localdb());
     gh.factory<_i517.ImagePickerUsecase>(
       () => _i517.ImagePickerUsecase(
         imagePickerService: gh<_i1018.ImagePickerServiceImpl>(),

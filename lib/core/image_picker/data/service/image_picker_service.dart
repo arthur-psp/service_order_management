@@ -8,16 +8,21 @@ import 'package:injectable/injectable.dart';
 class ImagePickerServiceImpl implements ImagePickerService {
   final ImagePicker _picker = ImagePicker();
 
+ ImagePickerServiceImpl() {
+    print('🎉 ImagePickerServiceImpl INSTANCIADO!');
+  }
+
   @override
   Future<String?> takePhoto() async {
     try {
+       print('📸 1. takePhoto() chamado');
       final XFile? photo = await _picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 80,
-        maxWidth: 1024,
+        imageQuality: 50,
+        maxWidth: 800,
         maxHeight: 1024,
       );
-      
+      print('📸 3. Resultado da câmera: ${photo?.path ?? "null"}');
       if (photo != null) {
         // Converte a imagem para base64 para salvar no banco
         final bytes = await File(photo.path).readAsBytes();
@@ -33,13 +38,14 @@ class ImagePickerServiceImpl implements ImagePickerService {
   @override
   Future<String?> pickFromGallery() async {
     try {
+      print('🖼️ 1. pickFromGallery() chamado');
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 80,
         maxWidth: 1024,
         maxHeight: 1024,
       );
-      
+       print('🖼️ 3. Resultado da galeria: ${image?.path ?? "null"}');
       if (image != null) {
         final bytes = await File(image.path).readAsBytes();
         return base64Encode(bytes);

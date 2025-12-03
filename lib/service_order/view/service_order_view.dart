@@ -4,6 +4,7 @@ import 'package:service_order_management/core/injectable.dart';
 import 'package:service_order_management/service_order/controller/service_order_controller.dart';
 import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
 import 'package:service_order_management/service_order/state/servic_order_state.dart';
+import 'dart:convert';
 
 class ServiceOrderView extends StatefulWidget {
   const ServiceOrderView({super.key});
@@ -229,7 +230,7 @@ class _ServiceOrderViewState extends State<ServiceOrderView> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            // Navegar para detalhes
+            _showServiceOrderDetails(service, context);
           },
           borderRadius: BorderRadius.circular(12),
           child: Padding(
@@ -337,6 +338,373 @@ class _ServiceOrderViewState extends State<ServiceOrderView> {
     );
   }
 
+  void _showServiceOrderDetails(ServiceOrder service, BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header com botões de ação
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Detalhes da Ordem',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              _confirmDelete(context, service.id!);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.grey),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // ID da ordem
+                  Text(
+                    'ID: #${service.id?.toString().padLeft(6, '0') ?? 'N/A'}',
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 24),
+                  // Informações Básicas
+                  Card(
+                    color: const Color(0xFFF5F7FA),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Informações Básicas',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildDetailRow(
+                            'Nome/Cliente:',
+                            service.name ?? 'N/A',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildDetailRow(
+                            'Descrição:',
+                            service.description ?? 'N/A',
+                          ),
+                          const SizedBox(height: 12),
+                          _buildDetailRow('Endereço:', service.adress ?? 'N/A'),
+                          const SizedBox(height: 12),
+                          _buildDetailRow(
+                            'Status:',
+                            service.status ?? 'N/A',
+                            isStatus: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Informações de Data
+                  Card(
+                    color: const Color(0xFFF5F7FA),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Cronograma',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          _buildDateRow(
+                            'Criada em:',
+                            service.createdDate,
+                            Colors.blue,
+                          ),
+                          const SizedBox(height: 12),
+                          _buildDateRow(
+                            'Iniciada em:',
+                            service.startedDate,
+                            Colors.orange,
+                          ),
+                          const SizedBox(height: 12),
+                          _buildDateRow(
+                            'Finalizada em:',
+                            service.finalizedDate,
+                            Colors.green,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Fotos do Serviço
+                  if (service.images != null && service.images!.isNotEmpty) ...[
+                    Card(
+                      color: const Color(0xFFF5F7FA),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Fotos do Serviço',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 8,
+                                    childAspectRatio: 1,
+                                  ),
+                              itemCount: service.images!.length,
+                              itemBuilder: (context, index) {
+                                return _buildViewOnlyImageTile(
+                                  service.images![index],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  // Botão de Fechar
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1E88E5),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Fechar',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, {bool isStatus = false}) {
+    Color statusColor = Colors.grey;
+    if (isStatus) {
+      statusColor = _getStatusColor(value);
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: isStatus
+              ? Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: statusColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              : Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDateRow(String label, DateTime? date, Color color) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: date != null
+              ? Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: color.withOpacity(0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: color,
+                        ),
+                      ),
+                      Text(
+                        '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: color.withOpacity(0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Text(
+                  'Não informado',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[400],
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildViewOnlyImageTile(String imageBase64) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        image: DecorationImage(
+          image: MemoryImage(base64Decode(imageBase64)),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  void _confirmDelete(BuildContext context, int orderId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Confirmar Exclusão'),
+          content: const Text(
+            'Tem certeza que deseja excluir esta ordem de serviço? Esta ação não pode ser desfeita.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o dialog de confirmação
+                Navigator.pop(context); // Fecha o dialog de detalhes
+                controller.delete(orderId); // Executa o delete
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Excluir'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Color _getStatusColor(String? status) {
     switch (status?.toLowerCase()) {
       case 'pendente':
@@ -380,7 +748,6 @@ class _ServiceOrderViewState extends State<ServiceOrderView> {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
     final addressController = TextEditingController();
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -462,7 +829,6 @@ class _ServiceOrderViewState extends State<ServiceOrderView> {
                         active: true,
                         status: 'pendente',
                       );
-
                       await controller.createServiceOrder(newOrder);
                       Navigator.pop(context);
                     },

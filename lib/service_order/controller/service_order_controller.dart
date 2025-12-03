@@ -38,6 +38,7 @@ class ServiceOrderController extends Cubit<ServiceOrderState>{
 
   Future<void> getById(int id) async {
     try {
+      print('🔧 TESTE DIRETO DO USECASE');
       emit(ServiceOrderLoading());
       await serviceOrderUsecase.getById(id);
       await getServiceOrder();
@@ -68,6 +69,7 @@ class ServiceOrderController extends Cubit<ServiceOrderState>{
 
   Future<void> addImageToServiceOrder(int id, String imageBase64) async {
     try {
+      print('🔧 TESTE DIRETO DO USECASE');
       final serviceOrder = await serviceOrderUsecase.getById(id);
 
       final List<String> updatedImages = [...(serviceOrder.images ?? []), imageBase64];
@@ -81,6 +83,7 @@ class ServiceOrderController extends Cubit<ServiceOrderState>{
   }
 
   Future<void> takePhotoForServiceOrder(int serviceOrderId) async {
+    print('🔧 TESTE DIRETO DO USECASE');
     final image = await imagePickerUseCase.takePhoto();
     if (image != null) {
       await addImageToServiceOrder(serviceOrderId, image);
@@ -88,6 +91,7 @@ class ServiceOrderController extends Cubit<ServiceOrderState>{
   }
 
   Future<void> pickPhotoForServiceOrder(int serviceOrderId) async {
+    print('🔧 TESTE DIRETO DO USECASE');
     final image = await imagePickerUseCase.pickFromGallery();
     if (image != null) {
       await addImageToServiceOrder(serviceOrderId, image);
