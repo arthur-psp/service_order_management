@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:service_order_management/core/image_picker/data/service/image_picker_service.dart';
+import 'package:service_order_management/module/image_picker/data/service/image_picker_service.dart';
 
 @injectable
 class ImagePickerUsecase {

@@ -11,21 +11,21 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:service_order_management/core/image_picker/core/domain/contract/image_picker_contract.dart'
+import 'package:service_order_management/module/image_picker/core/domain/contract/image_picker_contract.dart'
     as _i918;
-import 'package:service_order_management/core/image_picker/core/usecase/image_picker_usecase.dart'
+import 'package:service_order_management/module/image_picker/core/usecase/image_picker_usecase.dart'
     as _i517;
-import 'package:service_order_management/core/image_picker/data/service/image_picker_service.dart'
+import 'package:service_order_management/module/image_picker/data/service/image_picker_service.dart'
     as _i1018;
-import 'package:service_order_management/service_order/controller/service_order_controller.dart'
+import 'package:service_order_management/module/service_order/controller/service_order_controller.dart'
     as _i56;
-import 'package:service_order_management/service_order/core/domain/contract/service_order_contract.dart'
+import 'package:service_order_management/module/service_order/core/domain/contract/service_order_contract.dart'
     as _i366;
-import 'package:service_order_management/service_order/core/domain/usecase/service_order_usecase.dart'
+import 'package:service_order_management/module/service_order/core/domain/usecase/service_order_usecase.dart'
     as _i304;
-import 'package:service_order_management/service_order/data/repository/service_order_repository.dart'
+import 'package:service_order_management/module/service_order/data/repository/service_order_repository.dart'
     as _i534;
-import 'package:service_order_management/service_order/infra/local_db.dart'
+import 'package:service_order_management/module/service_order/infra/local_db.dart'
     as _i1027;
 
 extension GetItInjectableX on _i174.GetIt {

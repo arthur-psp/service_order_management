@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:service_order_management/core/image_picker/data/service/image_picker_service.dart';
+import 'package:service_order_management/module/image_picker/data/service/image_picker_service.dart';
 import 'package:service_order_management/core/injectable.dart';
-import 'package:service_order_management/service_order/infra/local_db.dart';
-import 'package:service_order_management/service_order/view/perform_service_order_View.dart';
-import 'package:service_order_management/service_order/view/service_order_view.dart';
+import 'package:service_order_management/module/service_order/infra/local_db.dart';
+import 'package:service_order_management/module/service_order/view/perform_service_order_View.dart';
+import 'package:service_order_management/module/service_order/view/service_order_view.dart';
 import 'package:service_order_management/core/injectable.dart';
 
 final GetIt getIt = GetIt.instance;

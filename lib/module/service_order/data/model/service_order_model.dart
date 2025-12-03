@@ -1,4 +1,4 @@
-import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
+import 'package:service_order_management/module/service_order/core/domain/model/service_order.dart';
 
 class ServiceOrderModel extends ServiceOrder{
   ServiceOrderModel({
@@ -8,7 +8,7 @@ class ServiceOrderModel extends ServiceOrder{
     required super.startedDate,
     required super.finalizedDate,
     required super.description,
-    required super.images,
+    super.images,
     required super.active,
     super.status,
     super.adress

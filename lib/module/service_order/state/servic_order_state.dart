@@ -1,4 +1,4 @@
-import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
+import 'package:service_order_management/module/service_order/core/domain/model/service_order.dart';
 
 abstract class ServiceOrderState {}
 

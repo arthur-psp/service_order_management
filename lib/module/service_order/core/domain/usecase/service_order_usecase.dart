@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:service_order_management/service_order/core/domain/contract/service_order_contract.dart';
-import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
+import 'package:service_order_management/module/service_order/core/domain/contract/service_order_contract.dart';
+import 'package:service_order_management/module/service_order/core/domain/model/service_order.dart';
 
 @injectable
 class ServiceOrderUsecase {

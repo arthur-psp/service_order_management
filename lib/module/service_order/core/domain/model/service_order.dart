@@ -19,13 +19,12 @@ class ServiceOrder {
     required this.startedDate,
     required this.finalizedDate,
     required this.description,
-    required this.images,
+    this.images,
     required this.active,
     this.status,
     this.adress
   });
 
-  // Método toMap convertendo DateTime para String (ISO)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -35,13 +34,12 @@ class ServiceOrder {
       'finalized_date': finalizedDate?.toIso8601String(),
       'description': description,
       'images': images != null ? jsonEncode(images) : null,
-      'active': active == true ? 1 : 0, // SQLite não tem bool nativo
+      'active': active == true ? 1 : 0,
       'status': status,
       'address': adress,
     };
   }
 
-  // Factory fromMap convertendo String para DateTime
   factory ServiceOrder.fromMap(Map<String, dynamic> map) {
     List<String>? imagesList;
     if(map['images'] != null ) {
@@ -66,13 +64,12 @@ class ServiceOrder {
           : null,
       description: map['description'],
       images: imagesList,
-      active: map['active'] == 1, // Convertendo de int para bool
+      active: map['active'] == 1, 
       status: map['status'],
       adress: map['address'],
     );
   }
 
-  // Método copyWith
   ServiceOrder copyWith({
     int? id,
     String? name,

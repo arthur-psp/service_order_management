@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:service_order_management/core/image_picker/core/usecase/image_picker_usecase.dart';
-import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
-import 'package:service_order_management/service_order/core/domain/usecase/service_order_usecase.dart';
-import 'package:service_order_management/service_order/state/servic_order_state.dart';
+import 'package:service_order_management/module/image_picker/core/usecase/image_picker_usecase.dart';
+import 'package:service_order_management/module/service_order/core/domain/model/service_order.dart';
+import 'package:service_order_management/module/service_order/core/domain/usecase/service_order_usecase.dart';
+import 'package:service_order_management/module/service_order/state/servic_order_state.dart';
 
 @injectable
 class ServiceOrderController extends Cubit<ServiceOrderState>{
@@ -32,7 +32,7 @@ class ServiceOrderController extends Cubit<ServiceOrderState>{
       await serviceOrderUsecase.create(serviceOrder);
       await getServiceOrder();
     } catch (e) {
-      ServiceOrderError('Erro ao criar nova ordem de serviço: $e');
+      emit(ServiceOrderError('Erro ao criar nova ordem de serviço: $e'));
     }
   }
 

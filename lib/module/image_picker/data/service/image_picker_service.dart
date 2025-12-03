@@ -1,5 +1,5 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:service_order_management/core/image_picker/core/domain/contract/image_picker_contract.dart';
+import 'package:service_order_management/module/image_picker/core/domain/contract/image_picker_contract.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:injectable/injectable.dart';

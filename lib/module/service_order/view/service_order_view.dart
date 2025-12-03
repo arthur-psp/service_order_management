@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_order_management/core/injectable.dart';
-import 'package:service_order_management/service_order/controller/service_order_controller.dart';
-import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
-import 'package:service_order_management/service_order/state/servic_order_state.dart';
+import 'package:service_order_management/module/service_order/controller/service_order_controller.dart';
+import 'package:service_order_management/module/service_order/core/domain/model/service_order.dart';
+import 'package:service_order_management/module/service_order/state/servic_order_state.dart';
 import 'dart:convert';
 
 class ServiceOrderView extends StatefulWidget {

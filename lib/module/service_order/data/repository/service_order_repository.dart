@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
-import 'package:service_order_management/service_order/core/domain/contract/service_order_contract.dart';
-import 'package:service_order_management/service_order/core/domain/model/service_order.dart';
-import 'package:service_order_management/service_order/infra/local_db.dart';
+import 'package:service_order_management/module/service_order/core/domain/contract/service_order_contract.dart';
+import 'package:service_order_management/module/service_order/core/domain/model/service_order.dart';
+import 'package:service_order_management/module/service_order/infra/local_db.dart';
 
 @Injectable(as: ServiceOrderRepository)
 
@@ -16,8 +16,9 @@ class ServiceOrderRepostoryImpl extends ServiceOrderRepository {
 
     final serviceOrderMap = serviceOrder.toMap();
 
-    //remove para ser autoincrement
+    
     serviceOrderMap.remove('id');
+    serviceOrderMap.remove('images');
 
     final serviceOrderId = await db.insert('service_order', serviceOrderMap);
     return serviceOrder.copyWith(id: serviceOrderId);
