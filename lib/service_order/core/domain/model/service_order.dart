@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ServiceOrder {
   int? id;
   String? name;
@@ -5,7 +7,7 @@ class ServiceOrder {
   DateTime? startedDate;
   DateTime? finalizedDate;
   String? description;
-  String? imageUrl;
+  List<String>? images;
   String? status;
   bool? active;
   String? adress;
@@ -17,7 +19,7 @@ class ServiceOrder {
     required this.startedDate,
     required this.finalizedDate,
     required this.description,
-    required this.imageUrl,
+    required this.images,
     required this.active,
     this.status,
     this.adress
@@ -32,7 +34,7 @@ class ServiceOrder {
       'started_date': startedDate?.toIso8601String(),
       'finalized_date': finalizedDate?.toIso8601String(),
       'description': description,
-      'image_url': imageUrl,
+      'images': images != null ? jsonEncode(images) : null,
       'active': active == true ? 1 : 0, // SQLite não tem bool nativo
       'status': status,
       'address': adress,
@@ -41,6 +43,15 @@ class ServiceOrder {
 
   // Factory fromMap convertendo String para DateTime
   factory ServiceOrder.fromMap(Map<String, dynamic> map) {
+    List<String>? imagesList;
+    if(map['images'] != null ) {
+      try {
+        imagesList = List<String>.from(jsonDecode(map['images']));
+      } catch (e) {
+        print('Erro no decode das imagens');
+        imagesList = null;
+      }
+    }
     return ServiceOrder(
       id: map['id'],
       name: map['name'],
@@ -54,7 +65,7 @@ class ServiceOrder {
           ? DateTime.parse(map['finalized_date']) 
           : null,
       description: map['description'],
-      imageUrl: map['image_url'],
+      images: imagesList,
       active: map['active'] == 1, // Convertendo de int para bool
       status: map['status'],
       adress: map['address'],
@@ -69,7 +80,7 @@ class ServiceOrder {
     DateTime? startedDate,
     DateTime? finalizedDate,
     String? description,
-    String? imageUrl,
+    List<String>? images,
     String? status,
     bool? active,
     String? adress,
@@ -81,7 +92,7 @@ class ServiceOrder {
       startedDate: startedDate ?? this.startedDate,
       finalizedDate: finalizedDate ?? this.finalizedDate,
       description: description ?? this.description,
-      imageUrl: imageUrl ?? this.imageUrl,
+      images: images ?? this.images,
       status: status ?? this.status,
       active: active ?? this.active,
       adress: adress ?? this.adress,

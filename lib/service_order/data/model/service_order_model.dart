@@ -8,7 +8,7 @@ class ServiceOrderModel extends ServiceOrder{
     required super.startedDate,
     required super.finalizedDate,
     required super.description,
-    required super.imageUrl,
+    required super.images,
     required super.active,
     super.status,
     super.adress

@@ -15,4 +15,16 @@ class ServiceOrderUsecase {
   Future<List<ServiceOrder>> getAll() async {
     return await serviceOrderRepository.getAll();
   }
+
+  Future<ServiceOrder> getById(int id) async {
+    return await serviceOrderRepository.getById(id);
+  }
+
+  Future<ServiceOrder> update(int id, ServiceOrder so) async {
+    return await serviceOrderRepository.update(id, so);
+  }
+
+  Future<void> delete(int id) async {
+    return await serviceOrderRepository.delete(id);
+  }
 }

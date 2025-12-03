@@ -458,7 +458,7 @@ class _ServiceOrderViewState extends State<ServiceOrderView> {
                         finalizedDate: DateTime.now().add(
                           const Duration(days: 2),
                         ),
-                        imageUrl: '',
+                        images: [],
                         active: true,
                         status: 'pendente',
                       );

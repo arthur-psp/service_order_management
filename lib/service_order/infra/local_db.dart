@@ -23,7 +23,7 @@ class Localdb {
               started_date TEXT,
               finalized_date TEXT,
               description TEXT NOT NULL,
-              image_url TEXT NOT NULL,
+              images TEXT NOT NULL,
               active INTEGER NOT NULL,
               status TEXT,
               address TEXT
